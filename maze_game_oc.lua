@@ -4,6 +4,7 @@ local keyboard = require('keyboard')
 --local colors = require("colors")
 local event = require('event')
 local computer = require('computer')
+local unicode = require('unicode')
 
 local w,h = 80,35
 gpu.setResolution(w,h)
@@ -76,8 +77,8 @@ local rarity = { --1 in rarity^rarity room. (it's random to it's more like a cha
 }
 
 local plrS = "P" -- Player icon
-local shpS = "N" -- Shop icon
-local prtS = "M" -- Portal icon
+local shpS = unicode.char(0x20AC) -- Shop icon
+local prtS = unicode.char(0x62C) -- Portal icon
 local lavS = "/" -- Lava icon
 local oshS = "O"             -- Once shop
 local ushS = "U"             -- Upgrades shop
@@ -340,7 +341,8 @@ while true do
         end
         -- Coins, Food, Water level
         --FOOD
-        gpu.setBackground(colors.brown)
+        gpu.setForeground(colors.white)
+        gpu.setBackground(colors.yellow)
         gpu.fill(0,h,w,1," ")
         gpu.set(1,h,"Food level: "..tostring(food))
         gpu.setForeground(colors.white)
@@ -358,9 +360,9 @@ while true do
         gpu.setBackground(colors.black)
         gpu.setForeground(colors.white)
         if map[cntY][cntX].type == "shop" then
-            dx,dy = w-width,1
+            dx,dy = w-width-1,1
             gpu.setForeground(colors.lime)
-            gpu.set(dx,dy,"Shop menu")
+            gpu.set(dx,dy,unicode.char(0x20AC).."Shop menu")
             for i=1,#shop_items,1 do
                 gpu.setForeground(colors.white)
                 dx,dy = w-width,i*2
@@ -373,9 +375,9 @@ while true do
             end
         end
         if map[cntY][cntX].type == "ushop" then
-            dx,dy = w-width,1
+            dx,dy = w-width-1,1
             gpu.setForeground(colors.blue)
-            gpu.set(dx,dy,"Upgrades")
+            gpu.set(dx,dy,unicode.char(0x22AA).."Upgrades")
             for i=1,#upgrades,1 do
                 gpu.setForeground(colors.white)
                 dx,dy = w-width,i*2
@@ -413,9 +415,9 @@ while true do
             end
         end
         if map[cntY][cntX].type == "portal" then
-            dx,dy = w-width,2
+            dx,dy = w-width-1,2
             gpu.setForeground(colors.cyan)
-            gpu.set(dx,dy,"Portal")
+            gpu.set(dx,dy,unicode.char(0x62C).."Portal")
             dx,dy = w-width,4
             gpu.set(dx,dy,"TELEPORT")
         end
@@ -424,7 +426,7 @@ while true do
         gpu.setForeground(colors.white)
         dx,dy = w-width,8
         gpu.setForeground(colors.brown)
-        gpu.set(w-width,8,"Backpack")
+        gpu.set(w-width-2,8,unicode.char(0xA9B).."Backpack")
         dx,dy = w-width,9
         gpu.setForeground(colors.orange)
         gpu.set(dx,dy,"Food")
@@ -651,7 +653,7 @@ if gameOver then
     gpu.set(dx,dy,"GAME OVER!")
     gpu.setForeground(colors.lightGray)
     dx,dy = (w-string.len(reason))/2,h/2+1
-    term.write(reason)
+    gpu.set(dx,dy,reason)
     sleep(3)
     gpu.setBackground(colors.black)
     gpu.fill(0,0,w,h," ")
@@ -661,10 +663,10 @@ else
     gpu.fill(0,0,w,h," ")
     gpu.setForeground(colors.white)
     dx,dy = (w-string.len("YOU WON!"))/2,h/2
-    term.write("YOU WON!")
+    gpu.set(dx,dy,"YOU WON!")
     gpu.setForeground(colors.lightGray)
     dx,dy = (w-string.len(reason))/2,h/2+1
-    term.write(reason)
+    gpu.set(dx,dy,reason)
     sleep(3)
     gpu.setBackground(colors.black)
     gpu.fill(0,0,w,h," ")
