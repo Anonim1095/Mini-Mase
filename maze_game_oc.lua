@@ -408,7 +408,7 @@ while true do
                     gpu.setForeground(colors.yellow)
                     gpu.set(dx,dy,"Already")
                 else
-                    gpu.set(dx,dy,tosting(once_upgrades[i].price))
+                    gpu.set(dx,dy,tostring(once_upgrades[i].price))
                 end
             end
         end
