@@ -76,12 +76,14 @@ local rarity = { --1 in rarity^rarity room. (it's random to it's more like a cha
     coins = 5
 }
 
-local plrS = "P" -- Player icon
-local shpS = unicode.char(0x20AC) -- Shop icon
+local plrS = unicode.char(0xEC12) -- Player icon
+local shpS = unicode.char(0x20AC)-- Shop icon
 local prtS = unicode.char(0x62C) -- Portal icon
-local lavS = "/" -- Lava icon
-local oshS = "O"             -- Once shop
-local ushS = "U"             -- Upgrades shop
+local lavS = unicode.char(0xE188)-- Lava icon
+local oshS = unicode.char(0x22AB)-- Once shop
+local ushS = unicode.char(0x22AA)-- Upgrades shop
+local wllS = unicode.char(0x28FF)-- Wall Symbol
+local drkS = unicode.char(0x28FF)-- Darkness symbol
 
 local gameOver = false
 local reason = "Something went wrong"
@@ -296,9 +298,9 @@ while true do
                 gpu.setBackground(colors.black)
                 dx,dy = x*2+offset-(cntX-range)*2,y*2+offset-(cntY-range)*2
                 if map[y][x].top == true then
-                    gpu.set(dx, dy,"# ")
+                    gpu.set(dx, dy,wllS.." ")
                 else
-                    gpu.set(dx, dy,"##")
+                    gpu.set(dx, dy,wllS..wllS)
                 end
                 dx,dy = x*2+offset-(cntX-range)*2,y*2+1+offset-(cntY-range)*2
                 local s = ""
@@ -307,10 +309,10 @@ while true do
                     s = plrS
                     sC = colors.yellow
                 elseif map[y][x].dark == true then
-                    s = "#"
+                    s = drkS
                     sC = colors.gray
                 end
-                if map[y][x].dark == false  or (y == cntY and x == cntX) then
+                if map[y][x].dark == false or (y == cntY and x == cntX) then
                     if map[y][x].type == "shop" then
                         s = shpS
                         sC = colors.lime
@@ -333,7 +335,7 @@ while true do
                     gpu.setForeground(sC)
                     gpu.set(dx+1,dy,s)
                 else
-                    gpu.set(dx,dy,"#")
+                    gpu.set(dx,dy,wllS)
                     gpu.setForeground(sC)
                     gpu.set(dx+1,dy,s)
                 end
@@ -349,12 +351,12 @@ while true do
         --Water
         gpu.setBackground(colors.cyan)
         gpu.fill(0,h-1,w,1," ")
-        gpu.set(1,h-1,"Water level: "..tostring(water*10))
+        gpu.set(1,h-1,unicode.char(0x2615).."Water level: "..tostring(water*10))
         gpu.setForeground(colors.white)
         --Coins
         gpu.setBackground(colors.orange)
         gpu.fill(0,h-2,w,1," ")
-        gpu.set(1,h-2,"Coins: "..tostring(coins))
+        gpu.set(1,h-2,unicode.char(0x26C3).."Coins: "..tostring(coins))
         gpu.setForeground(colors.white)
         --Shop menu display
         gpu.setBackground(colors.black)
@@ -395,9 +397,9 @@ while true do
             end
         end
         if map[cntY][cntX].type == "oshop" then
-            dx,dy = w-width,1
+            dx,dy = w-width-1,1
             gpu.setForeground(colors.yellow)
-            gpu.set(dx,dy,"Upgrades")
+            gpu.set(dx,dy,unicode.char(0x22AB).."Upgrades")
             for i=1,#once_upgrades,1 do
                 gpu.setForeground(colors.white)
                 dx,dy = w-width,i*2
@@ -654,7 +656,7 @@ if gameOver then
     gpu.setForeground(colors.lightGray)
     dx,dy = (w-string.len(reason))/2,h/2+1
     gpu.set(dx,dy,reason)
-    sleep(3)
+    os.sleep(3)
     gpu.setBackground(colors.black)
     gpu.fill(0,0,w,h," ")
     dx,dy = 1,1
@@ -667,7 +669,7 @@ else
     gpu.setForeground(colors.lightGray)
     dx,dy = (w-string.len(reason))/2,h/2+1
     gpu.set(dx,dy,reason)
-    sleep(3)
+    os.sleep(3)
     gpu.setBackground(colors.black)
     gpu.fill(0,0,w,h," ")
     dx,dy = 1,1
