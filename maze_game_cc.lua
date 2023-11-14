@@ -268,7 +268,7 @@ while true do
                 term.setTextColor(colors.white)
                 term.setCursorPos(x*2+offset-(cntX-range)*2,y*2+offset-(cntY-range)*2)
                 if map[y][x].top == true then
-                    term.write("# ")
+                    term.write("  ")
                 else
                     term.write("##")
                 end
