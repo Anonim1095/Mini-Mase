@@ -298,7 +298,6 @@ while true do
                 gpu.setBackground(colors.black)
                 dx,dy = x*2+offset-(cntX-range)*2,y*2+offset-(cntY-range)*2
                 if map[y][x].top == true then
-                    gpu.set(dx, dy,wllS.." ")
                 else
                     gpu.set(dx, dy,wllS..wllS)
                 end
@@ -331,7 +330,6 @@ while true do
                     end
                 end
                 if map[y][x].left == true then
-                    gpu.set(dx,dy," ")
                     gpu.setForeground(sC)
                     gpu.set(dx+1,dy,s)
                 else
